@@ -1,5 +1,6 @@
 FROM ubuntu/nginx:latest
 VOLUME /tmp
+WORKDIR /root
 COPY . .
 RUN apt update
 RUN apt -y upgrade
