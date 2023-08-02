@@ -46,10 +46,13 @@ go install github.com/kubernetes/kompose@latest
 
 kompose convert
 
-INFO Kubernetes file "api-tcp-service.yaml" created
-INFO Kubernetes file "db-tcp-service.yaml" created
-INFO Kubernetes file "api-deployment.yaml" created
-INFO Kubernetes file "api-claim0-persistentvolumeclaim.yaml" created
-INFO Kubernetes file "db-deployment.yaml" created
-kubectl apply -f api-tcp-service.yaml,db-tcp-service.yaml,api-deployment.yaml,api-claim0-persistentvolumeclaim.yaml,db-deployment.yaml
+The following command was run with Kompose to generate the yaml files from the docker compose file:
+kompose convert
+
+It produced these yaml files from the docker compose file
+INFO Kubernetes file "api-deployment.yaml" created 
+INFO Kubernetes file "api-claim0-persistentvolumeclaim.yaml" created 
+
+To run these kompose files on kubernetes, run:
+kubectl apply -f api-deployment.yaml,api-claim0-persistentvolumeclaim.yaml 
 
