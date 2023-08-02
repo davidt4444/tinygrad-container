@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    container_name: tinygrad-container-dev
+    build: .
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./:/src
+    labels:
+      kompose.service.type: LoadBalancer
+

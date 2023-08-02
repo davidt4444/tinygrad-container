@@ -1,0 +1,55 @@
+apt update
+apt upgrade
+apt install git
+git clone https://github.com/tinygrad/tinygrad.git
+cd tinygrad/
+apt install python3
+apt install python3-pip
+# For python 3.11+ and pip, they implemented pep 668, meaning Python
+# tools can now distinguish between packages that have been installed
+# by the user with a tool like pip and ones installed using a
+# distribution's package manager, like apt.
+# So, you have to add --break-system-packages
+python3 -m pip install --break-system-packages -e .
+python3 -m pip install --break-system-packages -e '.[testing]'
+python3 -m pip install --break-system-packages -e '.[llvm]'
+apt install nvidia-cuda-toolkit
+python3 -m pip install --break-system-packages -e '.[cuda]'
+python3 -m pip install --break-system-packages -e '.[triton]'
+python3 -m pip install --break-system-packages -e '.[webgpu]'
+# this will not work on nginx as it isn't a mac
+# and thus doesn't have sw_vers or metal for that matter
+python3 -m pip install --break-system-packages -e '.[metal]'
+python3 -m pip install --break-system-packages -e '.[linting]'
+
+apt install python-is-python3
+apt install clang
+python3 -m pytest
+python3 -m pytest -v -k TestTrain
+python3 ./test/models/test_train.py TestTrain.test_efficientnet
+
+##### Box hosting the docker container/Kubernetes Pod ##########
+
+# To build the docker image, run
+docker build -t tinygrad-container-dev .
+
+# To run compose, run 
+docker compose up
+
+# For Kubernetes you will need Kompose to convert the compose 
+# file to kubernetes yaml files.
+# For mac 
+brew install kompose
+# For ubuntu
+apt install golang
+go install github.com/kubernetes/kompose@latest
+
+kompose convert
+
+INFO Kubernetes file "api-tcp-service.yaml" created
+INFO Kubernetes file "db-tcp-service.yaml" created
+INFO Kubernetes file "api-deployment.yaml" created
+INFO Kubernetes file "api-claim0-persistentvolumeclaim.yaml" created
+INFO Kubernetes file "db-deployment.yaml" created
+kubectl apply -f api-tcp-service.yaml,db-tcp-service.yaml,api-deployment.yaml,api-claim0-persistentvolumeclaim.yaml,db-deployment.yaml
+
