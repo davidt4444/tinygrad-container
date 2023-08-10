@@ -12,6 +12,8 @@ docker build -t tinygrad-container-dev .
 
 To run the image from the compose file, run:
 docker compose up
+To force a rebuild run:
+docker-compose up --force-recreate
 
 The following command was run with Kompose to generate the yaml files from the docker compose file:
 kompose convert
